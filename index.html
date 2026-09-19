@@ -1,217 +1,26 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TingLiu | Blog</title>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+﻿---
+layout: default
+title: 首页
+---
+<h1>?? 我的博客</h1>
+<p>欢迎来到我的个人博客，记录学习与生活。</p>
+
+<h2>?? 最新文章</h2>
+<ul class="post-list">
+{% for post in site.posts %}
+<li>
+  <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
+  <a href="{{ post.url }}">{{ post.title }}</a>
+  {% if post.excerpt %}
+    <p class="excerpt">{{ post.excerpt | strip_html | truncate:100 }}</p>
+  {% endif %}
+</li>
+{% endfor %}
+</ul>
+
 <style>
-:root {
-  --bg: #ffffff;
-  --text: #222;
-  --card: #f8f9fa;
-  --border: #e5e7eb;
-  --primary: #2563eb;
-  --muted: #6b7280;
-}
-[data-theme="dark"] {
-  --bg: #111827;
-  --text: #f3f4f6;
-  --card: #1f2937;
-  --border: #374151;
-  --primary: #60a5fa;
-  --muted: #9ca3af;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  background:var(--bg);color:var(--text);
-  transition: background .3s,color .3s;
-  line-height:1.7;
-}
-.container{max-width:760px;margin:0 auto;padding:0 20px}
-header{
-  padding:40px 0;display:flex;justify-content:space-between;align-items:center;
-  border-bottom:1px solid var(--border);gap:1rem;
-}
-.site-title a{font-size:28px;font-weight:700;color:var(--text);text-decoration:none}
-nav a{color:var(--text);text-decoration:none;margin-left:18px}
-nav a:hover{color:var(--primary)}
-#themeBtn{padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer}
-main{padding:40px 0;min-height:calc(100vh - 220px)}
-.page{display:none}
-.page.active{display:block}
-.post-item{
-  background:var(--card);padding:22px;border-radius:12px;margin-bottom:18px;border:1px solid var(--border);
-}
-.post-item h2 a{color:var(--text);text-decoration:none}
-.post-item h2 a:hover{color:var(--primary)}
-.post-meta{font-size:14px;color:var(--muted);margin:6px 0 10px}
-.tag{display:inline-block;background:var(--border);padding:2px 8px;border-radius:99px;font-size:12px;margin-right:6px}
-.readmore{color:var(--primary);text-decoration:none;font-weight:500}
-article h1{margin-bottom:12px;font-size:32px}
-article h2{margin:28px 0 12px}
-article h3{margin:20px 0 10px}
-article p{margin-bottom:16px}
-article ul,ol{margin:16px 0 16px 24px}
-article blockquote{
-  border-left:4px solid var(--primary);padding:10px 16px;margin:16px 0;background:rgba(37,99,235,0.08);
-}
-article pre{border-radius:8px;overflow:auto;margin:16px 0}
-article img{max-width:100%;border-radius:8px;margin:16px 0}
-#giscus{margin-top:50px;padding-top:30px;border-top:1px solid var(--border)}
-footer{padding:30px 0;text-align:center;border-top:1px solid var(--border);color:var(--muted);font-size:14px}
-.back-btn{color:var(--primary);cursor:pointer;margin-bottom:20px;display:inline-block}
+.post-list {list-style:none;padding:0;}
+.post-list li{padding:1rem 0;border-bottom:1px solid #eee;}
+.post-date{color:#777;font-size:0.9rem;margin-right:10px;}
+.excerpt{color:#555;margin:0.3rem 0 0;font-size:0.95rem;}
 </style>
-</head>
-<body>
-<div class="container">
-<header>
-  <div class="site-title"><a href="#/">停留 Blog</a></div>
-  <nav>
-    <a href="#/">首页</a>
-    <a href="#about">关于</a>
-    <button id="themeBtn">切换主题</button>
-  </nav>
-</header>
-
-<main>
-  <!-- 首页文章列表 -->
-  <div id="home" class="page active">
-    <h1 style="margin-bottom:30px;">文章</h1>
-    <div id="postList"></div>
-  </div>
-
-  <!-- 文章详情页 -->
-  <div id="postDetail" class="page">
-    <div class="back-btn" onclick="window.location.hash='/'">← 返回列表</div>
-    <article id="articleContent"></article>
-    <div id="giscus"></div>
-  </div>
-
-  <!-- 关于页 -->
-  <div id="about" class="page">
-    <h1>关于我</h1>
-    <p style="margin-top:16px;">你好👋，这里是我的个人博客。记录学习、思考与随笔。</p>
-    <p style="margin-top:12px;">GitHub：<a style="color:var(--primary)" href="https://github.com/tytingliu" target="_blank">@tytingliu</a></p>
-  </div>
-</main>
-
-<footer>© 2025-2026 TingLiu | Powered by GitHub Pages</footer>
-</div>
-
-<script>
-// ========== 文章目录配置 ==========
-const posts = [
-  {
-    slug: "hello",
-    title: "欢迎来到我的博客",
-    date: "2026-09-18",
-    tags: ["博客", "GitHub Pages"],
-    path: "./posts/hello.md"
-  },
-  {
-    slug: "markdown-tips",
-    title: "Markdown 写作常用语法",
-    date: "2026-09-17",
-    tags: ["笔记"],
-    path: "./posts/markdown-tips.md"
-  },
-  {
-    slug: "one",
-    title: "《活法》稻盛和夫",
-    date: "2026-09-19",
-    tags: ["笔记"],
-    path: "./posts/one.md"
-  }
-];
-
-// ========== 渲染文章列表 ==========
-function renderPostList(){
-  const wrap = document.getElementById('postList');
-  wrap.innerHTML = '';
-  posts.forEach(p=>{
-    wrap.innerHTML += `
-    <div class="post-item">
-      <h2><a href="#post/${p.slug}">${p.title}</a></h2>
-      <div class="post-meta">${p.date}｜${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-      <a class="readmore" href="#post/${p.slug}">阅读全文 →</a>
-    </div>`;
-  })
-}
-
-// ========== 加载 Markdown 文章 ==========
-async function loadPost(slug){
-  const p = posts.find(x=>x.slug === slug);
-  if(!p) return;
-  const res = await fetch(p.path);
-  const md = await res.text();
-  const html = marked.parse(md);
-  document.getElementById('articleContent').innerHTML = `
-    <h1>${p.title}</h1>
-    <div class="post-meta">${p.date}｜${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-    ${html}
-  `;
-  Prism.highlightAll();
-  loadGiscus();
-}
-
-// ========== Giscus 评论（需要你自己去配置） ==========
-function loadGiscus(){
-  const giscusWrap = document.getElementById('giscus');
-  giscusWrap.innerHTML = '';
-  const script = document.createElement('script');
-  script.src = "https://giscus.app/client.js";
-  script.dataset.repo="tytingliu/tytingliu.github.io";
-  script.dataset.repoId=""; // ⚠️这里需要你去 giscus.app 获取
-  script.dataset.category="Announcements";
-  script.dataset.categoryId=""; // ⚠️这里需要你去 giscus.app 获取
-  script.dataset.mapping="title";
-  script.dataset.strict="0";
-  script.dataset.reactionsEnabled="1";
-  script.dataset.emitMetadata="0";
-  script.dataset.inputPosition="bottom";
-  script.dataset.theme="preferred_color_scheme";
-  script.dataset.lang="zh-CN";
-  script.crossOrigin="anonymous";
-  script.async=true;
-  giscusWrap.appendChild(script);
-}
-
-// ========== 路由 hash 监听 ==========
-function router(){
-  const hash = window.location.hash || "#/";
-  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
-  if(hash === "#/"){
-    document.getElementById('home').classList.add('active');
-    renderPostList();
-  }else if(hash.startsWith("#post/")){
-    document.getElementById('postDetail').classList.add('active');
-    const slug = hash.replace("#post/","");
-    loadPost(slug);
-  }else if(hash === "#about"){
-    document.getElementById('about').classList.add('active');
-  }
-}
-window.addEventListener('hashchange', router);
-window.addEventListener('load', router);
-
-// ========== 主题切换 ==========
-const themeBtn = document.getElementById('themeBtn');
-const root = document.documentElement;
-if(localStorage.getItem('theme')){
-  root.setAttribute('data-theme', localStorage.getItem('theme'));
-}
-themeBtn.onclick = ()=>{
-  if(root.getAttribute('data-theme') === 'dark'){
-    root.removeAttribute('data-theme');
-    localStorage.setItem('theme','light');
-  }else{
-    root.setAttribute('data-theme','dark');
-    localStorage.setItem('theme','dark');
-  }
-}
-</script>
-</body>

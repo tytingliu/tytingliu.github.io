@@ -1,0 +1,21 @@
+﻿# _config.yml
+title: 我的个人博客
+description: 记录学习、思考与日常
+author: YourName
+url: "https://tytingliu.github.io"
+baseurl: "" # 仓库名是 用户名.github.io 就留空
+
+markdown: kramdown
+permalink: /posts/:year/:month/:day/:title/
+
+# 导航菜单
+header_pages:
+  - index.html
+  - about.html
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# 文章配置
+show_excerpts: true
