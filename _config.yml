@@ -1,0 +1,27 @@
+title: tingliu
+subtitle:
+description:
+keywords:
+author: tytingliu
+language: zh-CN
+timezone: Asia/Shanghai
+
+url: https://tytingliu.github.io
+root: /
+permalink: :year/:month/:day/:title/
+
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+
+new_post_name: :title.md
+default_layout: post
+external_link:
+  enable: true
+  open_new_tab: true
+highlight:
+  enable: true
+  line_number: true
+theme: landscape
