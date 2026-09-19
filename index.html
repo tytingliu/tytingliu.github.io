@@ -1,26 +1,26 @@
-﻿---
+---
 layout: default
 title: 首页
 ---
-<h1>?? 我的博客</h1>
+<h1>我的博客</h1>
 <p>欢迎来到我的个人博客，记录学习与生活。</p>
 
-<h2>?? 最新文章</h2>
+<h2>最新文章</h2>
 <ul class="post-list">
 {% for post in site.posts %}
 <li>
   <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
   <a href="{{ post.url }}">{{ post.title }}</a>
   {% if post.excerpt %}
-    <p class="excerpt">{{ post.excerpt | strip_html | truncate:100 }}</p>
+  <p class="excerpt">{{ post.excerpt }}</p>
   {% endif %}
 </li>
 {% endfor %}
 </ul>
 
 <style>
-.post-list {list-style:none;padding:0;}
-.post-list li{padding:1rem 0;border-bottom:1px solid #eee;}
-.post-date{color:#777;font-size:0.9rem;margin-right:10px;}
-.excerpt{color:#555;margin:0.3rem 0 0;font-size:0.95rem;}
+.post-list { list-style: none; padding:0; }
+.post-list li { padding:1rem 0; border-bottom:1px solid #eee; }
+.post-date { color:#777; font-size:0.9rem; margin-right:10px; }
+.excerpt { color:#555; margin:4px 0 0 0; }
 </style>
