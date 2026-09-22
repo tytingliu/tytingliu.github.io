@@ -5,14 +5,14 @@ title: 首页
 <h1>我的博客</h1>
 <p>欢迎来到我的个人博客，记录学习与生活。</p>
 
-<!-- 新增：两个标题跳转 -->
+<!-- 两个标题跳转 -->
 <div class="nav-links">
-  <a href="/chuanxilu-wiki" class="tytingliu.github.io/chuanxilu-wiki/">
-    <h3>📖传习录</h3>
+  <a href="/chuanxilu-wiki">
+    <h3>📖 传习录</h3>
   </a>
-  <a href="/shujia" class="tytingliu.github.io/shujia/">
+  <a href="/shujia">
     <h3>📖 智慧书架</h3>
-    </a>
+  </a>
 </div>
 
 <h2>最新文章</h2>
@@ -29,8 +29,180 @@ title: 首页
 </ul>
 
 <style>
-.post-list { list-style: none; padding:0; }
-.post-list li { padding:1rem 0; border-bottom:1px solid #eee; }
-.post-date { color:#777; font-size:0.9rem; margin-right:10px; }
-.excerpt { color:#555; margin:4px 0 0 0; }
+/* ========== 暗黑主题核心样式 ========== */
+
+/* 全局重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0d1117;
+  color: #c9d1d9;
+  font-family: "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, 
+               "Segoe UI", Helvetica, Arial, sans-serif;
+  line-height: 1.75;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+/* 标题 */
+h1 {
+  font-size: 2.4rem;
+  color: #f0f6fc;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+  border-bottom: 2px solid #30363d;
+  padding-bottom: 0.6rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #f0f6fc;
+  margin: 2.5rem 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #21262d;
+}
+
+h3 {
+  color: #e6edf3;
+}
+
+p {
+  margin-bottom: 1rem;
+  color: #8b949e;
+}
+
+/* 导航卡片 */
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  flex: 1;
+  min-width: 200px;
+  text-decoration: none;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 1.5rem 1.8rem;
+  transition: all 0.25s ease;
+  display: block;
+}
+
+.nav-links a:hover {
+  border-color: #58a6ff;
+  background: #1c2333;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.nav-links a:hover h3 {
+  color: #58a6ff;
+}
+
+.nav-links h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+/* 文章列表 */
+.post-list {
+  list-style: none;
+  padding: 0;
+}
+
+.post-list li {
+  padding: 1.2rem 0;
+  border-bottom: 1px solid #21262d;
+  transition: background 0.2s;
+}
+
+.post-list li:hover {
+  background: #161b22;
+  padding-left: 0.8rem;
+  border-radius: 6px;
+}
+
+.post-date {
+  color: #6e7681;
+  font-size: 0.85rem;
+  margin-right: 12px;
+  font-family: "SF Mono", "Cascadia Code", monospace;
+}
+
+.post-list a {
+  color: #58a6ff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.05rem;
+}
+
+.post-list a:hover {
+  color: #79c0ff;
+  text-decoration: underline;
+}
+
+.excerpt {
+  color: #8b949e;
+  margin: 6px 0 0 0;
+  font-size: 0.92rem;
+}
+
+/* 代码块（如果有） */
+code {
+  background: #161b22;
+  color: #ff7b72;
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  border: 1px solid #30363d;
+}
+
+/* 选中文字 */
+::selection {
+  background: #58a6ff;
+  color: #0d1117;
+}
+
+/* 滚动条美化（Webkit浏览器） */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0d1117;
+}
+::-webkit-scrollbar-thumb {
+  background: #30363d;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #484f58;
+}
+
+/* 响应式 */
+@media (max-width: 600px) {
+  body {
+    padding: 1.5rem 1rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .nav-links a {
+    padding: 1rem 1.2rem;
+  }
+}
 </style>
