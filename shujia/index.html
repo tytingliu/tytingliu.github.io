@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧书架 · 六本改变命运的经典 | 深度全解</title>
+    <style>
+        :root {
+            --bg: #06060b;
+            --surface: #0f0f18;
+            --surface2: #171723;
+            --surface3: #1f1f2e;
+            --gold: #d4a853;
+            --gold-light: #e8c97a;
+            --gold-dim: #a68a3e;
+            --text: #c8c8d0;
+            --text-strong: #e8e8ef;
+            --text-muted: #888899;
+            --accent-naval: #c7956b;
+            --accent-dalio: #5b9ecf;
+            --accent-munger: #b89ac4;
+            --accent-thiel: #e0a55b;
+            --accent-kahneman: #c97a7a;
+            --accent-clear: #6db88d;
+            --border: rgba(255, 255, 255, 0.05);
+            --border-light: rgba(255, 255, 255, 0.10);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.6), 0 8px 24px rgba(0,0,0,0.4);
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Noto Serif SC', 'STSong', serif;
+            line-height: 1.82;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ── NAV ── */
+        .nav-bar {
+            position:sticky; top:0; z-index:100;
+            background: rgba(6,6,11,0.86);
+            backdrop-filter:blur(24px) saturate(160%);
+            -webkit-backdrop-filter:blur(24px) saturate(160%);
+            border-bottom:1px solid var(--border);
+            padding:0 1.5rem;
+        }
+        .nav-inner {
+            max-width:1500px; margin:0 auto;
+            display:flex; align-items:center; justify-content:space-between;
+            height:64px; gap:0.6rem; flex-wrap:wrap;
+        }
+        .nav-logo {
+            font-size:1.15rem; font-weight:800; letter-spacing:0.05em;
+            color:var(--gold); white-space:nowrap;
+        }
+        .nav-links {
+            display:flex; gap:0.75rem; list-style:none;
+            font-size:0.8rem; font-weight:500; flex-wrap:wrap;
+        }
+        .nav-links a {
+            color:var(--text-muted); text-decoration:none;
+            transition:color var(--transition); white-space:nowrap; padding:0.25rem 0.4rem;
+            border-radius:4px;
+        }
+        .nav-links a:hover { color:var(--gold-light); background:rgba(255,255,255,0.03); }
+
+        /* ── HERO ── */
+        .hero {
+            max-width:1500px; margin:0 auto; padding:5rem 2rem 3.5rem; text-align:center;
+        }
+        .hero-badge {
+            display:inline-block;
+            background:rgba(212,168,83,0.10);
+            border:1px solid rgba(212,168,83,0.25);
+            color:var(--gold-light); padding:0.45rem 1.4rem;
+            border-radius:999px; font-size:0.82rem; letter-spacing:0.07em;
+            margin-bottom:1.4rem;
+        }
+        .hero h1 {
+            font-size:clamp(2.8rem, 6vw, 4.2rem); font-weight:900;
+            letter-spacing:0.02em; color:#f4f2e8; line-height:1.15; margin-bottom:0.6rem;
+        }
+        .hero h1 span { color:var(--gold); }
+        .hero-sub {
+            font-size:1.1rem; color:var(--text-muted);
+            max-width:780px; margin:0 auto 1.2rem;
+        }
+        .hero-desc {
+            font-size:0.9rem; color:var(--text-muted);
+            max-width:600px; margin:0 auto;
+        }
+
+        /* ── CONTAINER ── */
+        .container { max-width:1500px; margin:0 auto; padding:0 2rem 3rem; }
+
+        /* ── BOOK SECTION ── */
+        .book-section {
+            margin-bottom:5rem; scroll-margin-top:90px;
+        }
+        .book-header {
+            display:flex; align-items:baseline; gap:0.6rem; flex-wrap:wrap;
+            margin-bottom:1.5rem; padding-bottom:0.6rem;
+            border-bottom:2px solid rgba(255,255,255,0.05);
+        }
+        .book-header .book-icon { font-size:1.6rem; }
+        .book-header h2 { font-size:1.9rem; font-weight:800; color:#ededed; letter-spacing:0.02em; }
+        .book-header .author { font-size:0.95rem; color:var(--text-muted); }
+
+        /* ── CARDS ── */
+        .card-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill, minmax(310px, 1fr));
+            gap:1.1rem;
+        }
+        .card {
+            background:var(--surface);
+            border:1px solid var(--border);
+            border-radius:var(--radius);
+            padding:1.5rem 1.5rem;
+            box-shadow:var(--shadow);
+            transition:background var(--transition), border-color var(--transition), transform var(--transition);
+        }
+        .card:hover {
+            background:var(--surface2);
+            border-color:var(--border-light);
+            transform:translateY(-3px);
+        }
+        .card h3 {
+            font-size:1.05rem; font-weight:700; margin-bottom:0.55rem; letter-spacing:0.01em;
+        }
+        .card p, .card li { font-size:0.9rem; color:var(--text-muted); }
+        .card ul, .card ol { padding-left:0; list-style:none; }
+        .card ul li, .card ol li { margin-bottom:0.3rem; }
+        .card ul li::before { content:"▸ "; font-weight:700; }
+        .card ol { counter-reset:item; }
+        .card ol li { counter-increment:item; }
+        .card ol li::before { content:counter(item) ". "; font-weight:700; }
+
+        /* accent colors */
+        .accent-naval { border-left:4px solid var(--accent-naval); }
+        .accent-naval h3 { color:var(--accent-naval); }
+        .accent-naval ul li::before, .accent-naval ol li::before { color:var(--accent-naval); }
+
+        .accent-dalio { border-left:4px solid var(--accent-dalio); }
+        .accent-dalio h3 { color:var(--accent-dalio); }
+        .accent-dalio ul li::before, .accent-dalio ol li::before { color:var(--accent-dalio); }
+
+        .accent-munger { border-left:4px solid var(--accent-munger); }
+        .accent-munger h3 { color:var(--accent-munger); }
+        .accent-munger ul li::before, .accent-munger ol li::before { color:var(--accent-munger); }
+
+        .accent-thiel { border-left:4px solid var(--accent-thiel); }
+        .accent-thiel h3 { color:var(--accent-thiel); }
+        .accent-thiel ul li::before, .accent-thiel ol li::before { color:var(--accent-thiel); }
+
+        .accent-kahneman { border-left:4px solid var(--accent-kahneman); }
+        .accent-kahneman h3 { color:var(--accent-kahneman); }
+        .accent-kahneman ul li::before, .accent-kahneman ol li::before { color:var(--accent-kahneman); }
+
+        .accent-clear { border-left:4px solid var(--accent-clear); }
+        .accent-clear h3 { color:var(--accent-clear); }
+        .accent-clear ul li::before, .accent-clear ol li::before { color:var(--accent-clear); }
+
+        /* ── Wide card (spans full width) ── */
+        .card-wide {
+            grid-column:1 / -1;
+        }
+
+        /* ── TABLES ── */
+        .table-wrap { overflow-x:auto; margin:1rem 0 1.8rem; }
+        table {
+            width:100%; border-collapse:collapse;
+            background:var(--surface); border-radius:var(--radius-sm);
+            overflow:hidden; box-shadow:var(--shadow); font-size:0.88rem;
+        }
+        thead { background:rgba(212,168,83,0.10); }
+        thead th {
+            color:var(--gold-light); padding:0.8rem 1rem;
+            text-align:left; font-weight:700; letter-spacing:0.03em; white-space:nowrap;
+        }
+        tbody td {
+            padding:0.7rem 1rem; border-top:1px solid var(--border);
+            color:var(--text-muted); vertical-align:top;
+        }
+        tbody tr:hover { background:rgba(255,255,255,0.012); }
+
+        /* ── BLOCKQUOTE / BOXES ── */
+        blockquote {
+            background:var(--surface);
+            border-left:4px solid var(--gold);
+            border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+            padding:1.1rem 1.5rem; margin:1rem 0;
+            font-style:italic; color:#bebaaa; box-shadow:var(--shadow);
+            font-size:0.95rem;
+        }
+        .formula-box {
+            background:rgba(212,168,83,0.06);
+            border:1px solid rgba(212,168,83,0.22);
+            border-radius:var(--radius); padding:1.3rem 1.8rem;
+            margin:1rem 0; text-align:center; font-weight:700;
+            color:var(--gold-light); box-shadow:var(--shadow);
+            font-size:1rem;
+        }
+        .highlight-box {
+            background:rgba(200,180,140,0.05);
+            border:1px solid rgba(200,180,140,0.18);
+            border-radius:var(--radius); padding:1.3rem 1.8rem;
+            margin:1.2rem 0; box-shadow:var(--shadow);
+            font-size:0.92rem; color:var(--text-muted);
+        }
+        .insight-box {
+            background:var(--surface2);
+            border-radius:var(--radius);
+            padding:1.6rem 2rem; margin:1.5rem 0;
+            box-shadow:var(--shadow);
+            font-size:0.93rem;
+        }
+
+        /* ── COMPARISON ── */
+        .compare-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));
+            gap:1.1rem; margin:1.8rem 0;
+        }
+        .compare-card {
+            background:var(--surface); border:1px solid var(--border);
+            border-radius:var(--radius); padding:1.5rem; box-shadow:var(--shadow);
+            transition:background var(--transition), border-color var(--transition);
+        }
+        .compare-card:hover { background:var(--surface2); border-color:var(--border-light); }
+        .compare-card h4 { font-size:1rem; margin-bottom:0.45rem; }
+        .compare-card p { font-size:0.88rem; color:var(--text-muted); }
+
+        /* ── FOOTER ── */
+        .footer {
+            text-align:center; padding:2.8rem 2rem;
+            color:var(--text-muted); font-size:0.82rem;
+            border-top:1px solid var(--border); letter-spacing:0.03em;
+        }
+        .footer strong { color:var(--gold); }
+
+        /* ── Back to top ── */
+        .back-top {
+            position:fixed; bottom:2rem; right:2rem;
+            background:var(--surface3); border:1px solid var(--border-light);
+            color:var(--gold-light); width:44px; height:44px;
+            border-radius:50%; display:flex; align-items:center; justify-content:center;
+            cursor:pointer; font-size:1.3rem; z-index:50;
+            transition:all var(--transition); text-decoration:none;
+            box-shadow:var(--shadow);
+        }
+        .back-top:hover { background:var(--gold-dim); color:#fff; border-color:var(--gold); }
+
+        @media (max-width:768px) {
+            .nav-links { gap:0.4rem; font-size:0.7rem; }
+            .hero h1 { font-size:2rem; }
+            .card-grid { grid-template-columns:1fr; }
+            .back-top { bottom:1rem; right:1rem; width:38px; height:38px; font-size:1.1rem; }
+        }
+    </style>
+</head>
+<body id="top">
+
+    <!-- ═══════════════ NAV ═══════════════ -->
+    <nav class="nav-bar">
+        <div class="nav-inner">
+            <span class="nav-logo">📚 智慧书架</span>
+            <ul class="nav-links">
+                <li><a href="#naval">① 纳瓦尔宝典</a></li>
+                <li><a href="#dalio">② 原则</a></li>
+                <li><a href="#munger">③ 穷查理宝典</a></li>
+                <li><a href="#thiel">④ 从0到1</a></li>
+                <li><a href="#kahneman">⑤ 思考快与慢</a></li>
+                <li><a href="#clear">⑥ 掌控习惯</a></li>
+                <li><a href="#compare">🔍 六书对比</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ═══════════════ HERO ═══════════════ -->
+    <header class="hero">
+        <div class="hero-badge">六本改变命运的经典 · 深度全解</div>
+        <h1>智慧<span>书架</span></h1>
+        <p class="hero-sub">纳瓦尔 · 达里奥 · 芒格 · 蒂尔 · 卡尼曼 · 克利尔</p>
+        <p class="hero-desc">从财富自由、系统决策、思维模型、创新垄断、认知心理学到习惯养成——六本经典著作的完整精华，一次性深度掌握。</p>
+    </header>
+
+    <div class="container">
+
+        <!-- ═══════════════════════════════════════ ① 纳瓦尔宝典 ═══════════════════════════════════════ -->
+        <div class="book-section" id="naval">
+            <div class="book-header">
+                <span class="book-icon">💰</span><h2>《纳瓦尔宝典》</h2><span class="author">纳瓦尔·拉维坎特 &nbsp;|&nbsp; The Almanack of Naval Ravikant</span>
+            </div>
+
+            <div class="insight-box" style="border-left:4px solid var(--accent-naval);">
+                <strong style="color:var(--accent-naval); font-size:1.05rem;">📌 全书定位</strong>
+                <p style="margin-top:0.4rem;">硅谷天使投资人之王纳瓦尔关于<strong>财富积累</strong>与<strong>幸福获得</strong>的智慧箴言。核心理念：财富不只是运气，幸福不只是情绪——两者都是可以学习的技能。</p>
+            </div>
+
+            <!-- PART A: 财富 -->
+            <h3 style="color:var(--accent-naval); margin:1.6rem 0 0.8rem; font-size:1.2rem;">▎第一部分：如何不靠运气致富</h3>
+            <div class="card-grid">
+                <div class="card accent-naval">
+                    <h3>1. 财富 ≠ 金钱 ≠ 地位</h3>
+                    <p><strong>财富</strong>是你在睡觉时也能为你创造收入的生产性资产——企业、股票、房产、知识产权。<strong>金钱</strong>只是转移财富的媒介，是社会打给你的欠条。<strong>地位</strong>是零和博弈，你高我低；财富创造是正和博弈，你可以创造新价值让所有人受益。追求财富而非金钱或地位。</p>
+                </div>
+                <div class="card accent-naval">
+                    <h3>2. 把自己产品化（Productize Yourself）</h3>
+                    <p>全书最核心公式：</p>
+                    <div class="formula-box" style="font-size:0.95rem; margin:0.5rem 0;">
+                        <strong>财富 = （专长 + 杠杆） × 判断力</strong>
+                    </div>
+                    <p>把自己视为一个产品，找到你独有的"专长"，叠加"杠杆"，用"判断力"做正确决策。三者缺一不可，且判断力起到乘法效应。</p>
+                </div>
+                <div class="card accent-naval">
+                    <h3>3. 专长（Specific Knowledge）</h3>
+                    <p>无法通过培训获得、只能通过<strong>自我发现</strong>获得的知识。它源于你天生的好奇心和真正的热爱——那些你做起来像在"玩耍"、别人做起来像在"工作"的事情。专长往往是<strong>隐性知识</strong>，难以言传，因此无法被外包或自动化。找到你天生擅长且社会有需求但不知如何获取的东西。</p>
+                </div>
+                <div class="card accent-naval">
+                    <h3>4. 三种杠杆——财富的核心引擎</h3>
+                    <p>杠杆让你用更少的投入撬动更大的产出。纳瓦尔将杠杆分为三种，重要性递增：</p>
+                    <ul>
+                        <li><strong>劳动力杠杆</strong>：让别人为你工作。最古老但管理难度最大。</li>
+                        <li><strong>资本杠杆</strong>：用钱生钱。需要他人许可，有门槛。</li>
+                        <li><strong>代码与媒体杠杆</strong>：<em>无需许可的杠杆</em>。写一次代码、录一期播客、写一篇文章——复制成本为零，可以被无限次消费。这是普通人最好的杠杆。</li>
+                    </ul>
+                </div>
+                <div class="card accent-naval">
+                    <h3>5. 判断力（Judgment）</h3>
+                    <p>在杠杆时代，<strong>方向比努力重要一万倍</strong>。判断力就是知道在重大决策上做出正确选择的能力——尤其是那些不可逆的决策。智慧 = 知道你行为的长期后果。判断力来自经验，但更多来自对基础学科（微观经济学、博弈论、心理学、进化论）的深刻理解。</p>
+                </div>
+                <div class="card accent-naval">
+                    <h3>6. 复利思维</h3>
+                    <p>财富有复利，关系有复利，知识有复利，健康也有复利。复利的核心是<strong>长期不间断地积累</strong>。与长期主义者合作，选择你能玩一辈子的游戏。在投资中，时间是你的朋友；在人际关系中，信任是复利的基础。</p>
+                </div>
+                <div class="card accent-naval">
+                    <h3>7. 承担责任与拥有股权</h3>
+                    <p>靠出卖时间永远无法致富——因为你的时间是线性的，而财富需要指数增长。你必须<strong>拥有股权</strong>（企业的一部分、知识产权、投资组合）。同时，在你自己名下承担风险——社会会用杠杆回报那些敢于承担商业风险的人。</p>
+                </div>
+                <div class="card accent-naval">
+                    <h3>8. 成为一头独角兽</h3>
+                    <p>与其在每个方面都做到"还不错"，不如在<strong>一个方面做到世界顶尖</strong>。当你某项技能达到前1%时，竞争会自动消失。找到你天生擅长且热爱的那个领域，做到极致。不需要成为全能型人才——只需要成为某件具体事情的不可替代者。</p>
+                </div>
+                <div class="card accent-naval">
+                    <h3>9. 四种运气</h3>
+                    <ul>
+                        <li><strong>盲目的运气</strong>：完全随机，不可控。</li>
+                        <li><strong>行动带来的运气</strong>：不断尝试，增加中奖概率。</li>
+                        <li><strong>识别运气的能力</strong>：对某个领域足够敏感，能发现别人看不到的机会。</li>
+                        <li><strong>吸引运气</strong>：因为你的独特专长和声誉，机会主动找上门来。</li>
+                    </ul>
+                </div>
+                <div class="card accent-naval">
+                    <h3>10. 退休的定义</h3>
+                    <p>退休不是停止工作。退休是<strong>不再为了想象中的明天而牺牲今天</strong>。当你的被动收入覆盖你的支出，你就退休了——无论你是否还在工作。你可以选择做自己真正热爱的事情，而不是为了生存而工作。</p>
+                </div>
+            </div>
+
+            <!-- PART B: 幸福 -->
+            <h3 style="color:var(--accent-naval); margin:2rem 0 0.8rem; font-size:1.2rem;">▎第二部分：幸福的哲学</h3>
+            <div class="card-grid">
+                <div class="card accent-naval">
+                    <h3>11. 幸福的本质</h3>
+                    <p>幸福不是需要追逐的目标，而是你剔除欲望、嫉妒、焦虑和执念之后的<strong>默认状态</strong>。幸福 = 你此刻不想要任何其他状态的时刻。婴儿天生幸福，是因为他们没有欲望的负担。成年人的不幸，大多来自想要的东西太多。</p>
+                </div>
+                <div class="card accent-naval">
+                    <h3>12. 欲望的真相</h3>
+                    <blockquote>"欲望是与自己签订的、直到得到之前都不快乐的契约。"</blockquote>
+                    <p>每一个欲望都是一项待完成的任务。欲望越多，内心的待办清单越长，焦虑越重。减少欲望比满足欲望更有效——因为欲望是无限的，而满足欲望的能力是有限的。</p>
+                </div>
+                <div class="card accent-naval">
+                    <h3>13. 活在当下</h3>
+                    <p>你的大脑并非你的全部——你是<strong>观察你思维的那个存在</strong>。焦虑来自对未来的过度思考，懊悔来自对过去的纠缠。当下这一刻，其实什么都不缺。训练自己回到当下的能力，是幸福的核心技能。</p>
+                </div>
+                <div class="card accent-naval">
+                    <h3>14. 嫉妒是幸福的毒药</h3>
+                    <p>你嫉妒的只是他人生活的某个切片——你看到了他成功的瞬间，但你没有看到他的痛苦、他的牺牲、他的全部。如果你真正了解那个人的<strong>整个人生</strong>，你大概率不会愿意交换。嫉妒是把自己的人生片段与他人最光鲜的片段比较。</p>
+                </div>
+                <div class="card accent-naval">
+                    <h3>15. 训练大脑的四种方式</h3>
+                    <ul>
+                        <li><strong>冥想</strong>：每天静坐，观察呼吸和思绪。</li>
+                        <li><strong>感恩练习</strong>：每天列出几件感恩的事，重塑大脑的关注点。</li>
+                        <li><strong>放下评判</strong>：不对每件事贴"好/坏"标签。</li>
+                        <li><strong>旁观者视角</strong>：当情绪升起时，对自己说"有趣的是，我感到愤怒正在产生。"</li>
+                    </ul>
+                </div>
+                <div class="card accent-naval">
+                    <h3>16. 核心价值观排序</h3>
+                    <p>纳瓦尔的优先级：<strong>健康 > 爱 > 使命 > 财富</strong>。没有健康，一切归零。没有爱和关系，财富毫无意义。找到你的使命——那些你做起来毫不费力但觉得充满意义的事情。财富是前三者的自然结果。</p>
+                </div>
+            </div>
+
+            <!-- 纳瓦尔语录 -->
+            <div class="highlight-box" style="border-left:4px solid var(--accent-naval);">
+                <strong style="color:var(--accent-naval);">🔑 纳瓦尔核心语录</strong>
+                <ul style="list-style:none; padding:0; margin-top:0.5rem;">
+                    <li style="margin-bottom:0.35rem;">▸ "用头脑赚钱，而不是用时间。"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "培养专长、承担责任、利用杠杆——社会总有一天必须回报你。"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "退休不是不工作，而是不再为了想象中的明天而牺牲今天。"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "健康、爱和使命，按这个顺序排列，其他都不重要。"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "当你真正与自己和解时，你会发现自己只想安静地独处。"</li>
+                    <li>▸ "生活中所有好处都来自复利——金钱、关系、习惯、知识，无一例外。"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ ② 原则 ═══════════════════════════════════════ -->
+        <div class="book-section" id="dalio">
+            <div class="book-header">
+                <span class="book-icon">🧭</span><h2>《原则》</h2><span class="author">雷·达里奥 &nbsp;|&nbsp; Principles: Life & Work</span>
+            </div>
+
+            <div class="insight-box" style="border-left:4px solid var(--accent-dalio);">
+                <strong style="color:var(--accent-dalio); font-size:1.05rem;">📌 全书定位</strong>
+                <p style="margin-top:0.4rem;">桥水基金创始人雷·达里奥的毕生经验总结。将人生和工作中反复被验证有效的做法提炼为"原则"，形成一套<strong>可以复用的决策系统</strong>。核心目标：让你像操作机器一样操作自己的人生。</p>
+            </div>
+
+            <!-- PART A -->
+            <h3 style="color:var(--accent-dalio); margin:1.6rem 0 0.8rem; font-size:1.2rem;">▎第一部分：生活的原则</h3>
+            <div class="card-grid">
+                <div class="card accent-dalio">
+                    <h3>1. 拥抱现实，应对现实</h3>
+                    <p>做一个<strong>超级现实主义者</strong>。不要抱怨现实不如你意——现实就是现实，它不关心你的感受。梦想 + 现实 + 决心 = 成功的人生。理解现实如何运作，然后与现实合作而非对抗。</p>
+                </div>
+                <div class="card accent-dalio">
+                    <h3>2. 痛苦 + 反思 = 进步</h3>
+                    <p>痛苦是宇宙在告诉你：你需要改变些什么。大多数人面对痛苦的反应是逃避或抱怨。少数人面对痛苦的反应是<strong>反思</strong>——为什么痛苦？我哪里做错了？下次如何避免？后者获得了进步。</p>
+                </div>
+                <div class="card accent-dalio">
+                    <h3>3. 五步流程法</h3>
+                    <p>实现任何目标的五个步骤，必须按顺序执行：</p>
+                    <ol style="padding-left:1.2rem; font-size:0.9rem; color:var(--text-muted);">
+                        <li><strong>明确目标</strong>：知道自己真正想要什么。</li>
+                        <li><strong>找出问题</strong>：坦诚面对阻碍，而非容忍问题。</li>
+                        <li><strong>诊断根源</strong>：深入挖掘根本原因，而非停留在表面。</li>
+                        <li><strong>设计方案</strong>：制定具体可行的行动计划。</li>
+                        <li><strong>坚定执行</strong>：执行是实现一切的最终检验。</li>
+                    </ol>
+                </div>
+                <div class="card accent-dalio">
+                    <h3>4. 人的两大障碍</h3>
+                    <p><strong>自我意识障碍</strong>：大脑天生保护我们的自尊，让我们否认错误。它阻止我们看到自己的缺点。<strong>盲点障碍</strong>：每个人的思维方式都有局限性，有些事情你就是看不到。克服这两个障碍的唯一方法是——极度开明，让别人指出你的盲点。</p>
+                </div>
+                <div class="card accent-dalio">
+                    <h3>5. 头脑极度开明</h3>
+                    <p>大多数人在大多数时候关心的是"证明自己是对的"，而不是"找到正确答案"。极度开明意味着你愿意接受<strong>自己可能是错的</strong>这一事实，并积极寻找相反证据。学会从他人的视角看问题，尤其是那些与你思维方式不同的人。</p>
+                </div>
+                <div class="card accent-dalio">
+                    <h3>6. 理解人与人的不同</h3>
+                    <p>每个人天生有不同的思维方式和性格特质。不要试图把所有人变成一样的人，而是<strong>理解每个人的独特配置</strong>，然后把合适的人放在合适的位置上。达里奥用性格测试工具（如MBTI、桥水自研工具）来了解团队成员。</p>
+                </div>
+            </div>
+
+            <!-- PART B -->
+            <h3 style="color:var(--accent-dalio); margin:2rem 0 0.8rem; font-size:1.2rem;">▎第二部分：工作的原则</h3>
+            <div class="card-grid">
+                <div class="card accent-dalio">
+                    <h3>7. 创意择优（Idea Meritocracy）</h3>
+                    <p>最好的想法应该胜出，不管它来自谁。这不是民主——不是每个人一票。这是<strong>可信度加权</strong>的决策：在某个领域有过多次成功经验的人，其意见权重更高。让最了解情况的人做出决策。</p>
+                </div>
+                <div class="card accent-dalio">
+                    <h3>8. 极度透明与极度求真</h3>
+                    <p>在桥水，所有会议都会被录音，任何人都可以调阅。错误不是问题，<strong>掩盖错误才是问题</strong>。极度透明让问题无处遁形，极度求真让人们直面真相。这听起来残酷，但达里奥认为这是最高效的组织方式。</p>
+                </div>
+                <div class="card accent-dalio">
+                    <h3>9. 像机器一样运转</h3>
+                    <p>将你的组织（或你自己）视为一台机器，这台机器由两部分组成：<strong>设计</strong>（制度和流程）和<strong>人</strong>（执行者）。不断地比较产出与目标，找出差距，诊断机器出了什么问题，然后调整设计或人。反复迭代。</p>
+                </div>
+                <div class="card accent-dalio">
+                    <h3>10. 可信度加权决策</h3>
+                    <p>在做决策时，问自己两个问题：谁对这个决策最有发言权？他们为什么有发言权？听取那些<strong>在该领域有过至少三次成功经验、并且能清晰解释其逻辑</strong>的人的意见。把决策权交给可信度高的人。</p>
+                </div>
+                <div class="card accent-dalio">
+                    <h3>11. 允许犯错，但不允许掩盖错误</h3>
+                    <p>错误是学习过程中不可避免的一部分。达里奥鼓励"犯错日志"——每个人记录自己的错误并分享给团队。这样每个人都能从一个人的错误中学习。关键不是惩罚错误，而是确保<strong>同一个错误不犯两次</strong>。</p>
+                </div>
+                <div class="card accent-dalio">
+                    <h3>12. 历史是周期性的</h3>
+                    <p>达里奥花大量时间研究历史——债务周期、经济周期、帝国兴衰。他发现<strong>大多数事情都是历史上发生过的事情的变体</strong>。理解历史模式，你就能更好地预判未来。太阳底下没有新鲜事。</p>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="border-left:4px solid var(--accent-dalio);">
+                <strong style="color:var(--accent-dalio);">🔑 达里奥核心语录</strong>
+                <ul style="list-style:none; padding:0; margin-top:0.5rem;">
+                    <li style="margin-bottom:0.35rem;">▸ "痛苦 + 反思 = 进步。"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "不要担心自己看起来好不好——担心自己能不能实现目标。"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "如果你不觉得一年前的自己很蠢，说明你这一年没有学到足够多。"</li>
+                    <li>▸ "时间是最终的货币，竞争的不是金钱，而是时间。"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ ③ 穷查理宝典 ═══════════════════════════════════════ -->
+        <div class="book-section" id="munger">
+            <div class="book-header">
+                <span class="book-icon">🧠</span><h2>《穷查理宝典》</h2><span class="author">查理·芒格 &nbsp;|&nbsp; Poor Charlie's Almanack</span>
+            </div>
+
+            <div class="insight-box" style="border-left:4px solid var(--accent-munger);">
+                <strong style="color:var(--accent-munger); font-size:1.05rem;">📌 全书定位</strong>
+                <p style="margin-top:0.4rem;">巴菲特半个世纪的搭档、伯克希尔·哈撒韦副董事长查理·芒格的毕生智慧。核心主张：掌握<strong>多元思维模型</strong>，用跨学科的知识网格来理解世界、做出决策、避免愚蠢。</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card accent-munger">
+                    <h3>1. 多元思维模型——全书核心</h3>
+                    <p>芒格认为，世界不是按照学科划分的。如果你只用一种模型看问题，就会扭曲现实来适应你的模型。他主张掌握约<strong>100个来自不同学科的核心模型</strong>——包括数学（复利、概率论）、物理学（临界点、杠杆）、生物学（进化论）、心理学（认知偏误）、经济学（供需、机会成本）、化学（自催化）等。这些模型组成一个"思维格栅"，帮助你看到别人看不到的东西。</p>
+                </div>
+                <div class="card accent-munger">
+                    <h3>2. 逆向思维</h3>
+                    <blockquote>"如果我知道我会死在哪里，我就永远不去那里。"</blockquote>
+                    <p>芒格最著名的思维方法。与其想"如何成功"，不如想<strong>"如何确保失败"</strong>——然后避免做那些事。成功的人和不成功的人之间的区别，往往不是成功的人做了更多聪明事，而是他们<strong>避免了更多愚蠢事</strong>。</p>
+                </div>
+                <div class="card accent-munger">
+                    <h3>3. 人类误判心理学——25种心理倾向</h3>
+                    <p>芒格自己撰写的心理学体系，总结了人类最常犯的25种认知错误：</p>
+                    <ul>
+                        <li><strong>奖励/惩罚超级反应</strong>：激励机制决定了行为。你奖励什么，就会得到什么。</li>
+                        <li><strong>喜欢/热爱倾向</strong>：人们会忽略喜欢对象的缺点。</li>
+                        <li><strong>厌恶倾向</strong>：一旦讨厌某人/某事，就全盘否定。</li>
+                        <li><strong>避免不一致性倾向</strong>：人们倾向于坚持自己已经说过或相信的东西，即使它是错的。</li>
+                        <li><strong>好奇心倾向</strong>：好奇心驱动学习，但也会让人分心。</li>
+                        <li><strong>嫉妒倾向</strong>：嫉妒是人性中最强烈的驱动力之一。</li>
+                        <li><strong>回馈倾向</strong>：别人给你好处，你会想回报——这是互惠法则的根源。</li>
+                        <li><strong>受简单联想影响的倾向</strong>：因为A和B一起出现过，就认为A导致了B。</li>
+                        <li><strong>自视过高倾向</strong>：人们系统性地高估自己的能力。</li>
+                        <li><strong>过度乐观倾向</strong>：人们对未来过度乐观。</li>
+                        <li>……（共25种，详见原书第十一讲）</li>
+                    </ul>
+                </div>
+                <div class="card accent-munger">
+                    <h3>4. 能力圈</h3>
+                    <p>清楚知道自己<strong>能力的边界</strong>比知道很多事情更重要。芒格和巴菲特只投资他们真正理解的行业——他们称为"能力圈"。在能力圈内深入行动，在能力圈外保持谦虚和学习。承认"我不知道"是一种巨大的智慧。</p>
+                </div>
+                <div class="card accent-munger">
+                    <h3>5. 铁锤人综合征</h3>
+                    <blockquote>"在只有铁锤的人眼里，每个问题都像钉子。"</blockquote>
+                    <p>如果你只掌握一个学科的知识，你会把所有问题都套进那个框架里。这就是为什么只学一门学科是危险的——你会变成一个"铁锤人"。芒格反复强调跨学科学习的必要性。</p>
+                </div>
+                <div class="card accent-munger">
+                    <h3>6. 复利 + 耐心 = 财富</h3>
+                    <p>芒格和巴菲特的投资哲学可以浓缩为：<strong>找到优质企业，以合理价格买入，然后坐着不动。</strong>他们的财富大部分来自少数几个决策，持有几十年。频繁交易是财富的敌人。耐心是最被低估的品质。</p>
+                </div>
+                <div class="card accent-munger">
+                    <h3>7. 避免愚蠢比追求聪明更重要</h3>
+                    <p>芒格说自己一生的成功大多来自<strong>避免做愚蠢的事</strong>——不吸毒、不酗酒、不赌博、不嫉妒、不怨恨、不自怜。这些看起来简单，但大多数人做不到。他说："我只要知道我会死在哪里，我就不去那里——这让我活到了现在。"</p>
+                </div>
+                <div class="card accent-munger">
+                    <h3>8. 终身阅读的重要性</h3>
+                    <blockquote>"在我一生中，我认识的聪明人没有一个不是每天阅读的——没有，零个。一个都没有。"</blockquote>
+                    <p>芒格被称为"长着两条腿的书架"。他每天花大量时间阅读——书籍、年报、报纸、学术论文。阅读是建立多元思维模型的基础。如果你不阅读，你只能从自己的有限经验中学习，那太慢了。</p>
+                </div>
+                <div class="card accent-munger">
+                    <h3>9. 检查清单方法论</h3>
+                    <p>芒格推崇使用<strong>检查清单</strong>来做决策——尤其是在投资中。清单确保你不会遗漏关键要素，不会在压力下做出情绪化决定。飞行员用清单，外科医生用清单，投资者也应该用清单。清单是避免愚蠢错误的最后一道防线。</p>
+                </div>
+                <div class="card accent-munger">
+                    <h3>10. 自怜是毁灭性的</h3>
+                    <p>芒格说自怜是最具破坏性的情绪之一。一旦你开始自怜，你的判断力就会完全丧失。无论发生什么不幸的事——接受它，分析它，从中学习，然后继续前进。永远不要沉溺于"为什么是我"。</p>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="border-left:4px solid var(--accent-munger);">
+                <strong style="color:var(--accent-munger);">🔑 芒格核心语录</strong>
+                <ul style="list-style:none; padding:0; margin-top:0.5rem;">
+                    <li style="margin-bottom:0.35rem;">▸ "反过来想，总是反过来想。"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "获得想要的东西的最好方法，是让自己配得上它。"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "如果你不觉得一年前的自己很蠢，说明你这一年没有学到足够多。"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "我这辈子从来没有见过哪个聪明人不读书的——零。"</li>
+                    <li>▸ "在只有铁锤的人眼里，每个问题都像钉子。"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ ④ 从0到1 ═══════════════════════════════════════ -->
+        <div class="book-section" id="thiel">
+            <div class="book-header">
+                <span class="book-icon">🚀</span><h2>《从0到1》</h2><span class="author">彼得·蒂尔 &nbsp;|&nbsp; Zero to One</span>
+            </div>
+
+            <div class="insight-box" style="border-left:4px solid var(--accent-thiel);">
+                <strong style="color:var(--accent-thiel); font-size:1.05rem;">📌 全书定位</strong>
+                <p style="margin-top:0.4rem;">PayPal联合创始人、硅谷传奇投资人彼得·蒂尔的创业哲学。核心问题：<strong>"有什么重要事实是很少人同意你的？"</strong> 全书围绕如何创造真正的创新（从0到1）而非复制（从1到N）展开。</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card accent-thiel">
+                    <h3>1. 水平进步 vs 垂直进步</h3>
+                    <p><strong>水平进步（从1到N）</strong>：复制已有的成功模式。全球化就是水平进步——中国复制美国，东南亚复制中国。<strong>垂直进步（从0到1）</strong>：做从未有人做过的事。真正的技术创新。蒂尔认为未来需要更多从0到1。</p>
+                </div>
+                <div class="card accent-thiel">
+                    <h3>2. 竞争是输家的游戏</h3>
+                    <p>在完全竞争市场中，利润最终会被压缩到零。真正伟大的企业追求<strong>垄断</strong>——做别人做不到的事情。蒂尔说："所有失败的公司都一样——它们无法逃脱竞争。" 垄断者可以自由创新，因为不用担心被竞争对手逼死。</p>
+                </div>
+                <div class="card accent-thiel">
+                    <h3>3. 垄断企业的四大特征</h3>
+                    <ul>
+                        <li><strong>专利技术</strong>：比现有最佳方案好10倍以上。</li>
+                        <li><strong>网络效应</strong>：用户越多，产品越好用。</li>
+                        <li><strong>规模经济</strong>：边际成本随规模递减。</li>
+                        <li><strong>品牌优势</strong>：强大的品牌让用户信任。</li>
+                    </ul>
+                </div>
+                <div class="card accent-thiel">
+                    <h3>4. 幂次法则</h3>
+                    <p>风险投资中，最好的那一个项目往往超过其他所有项目的总和。生活也是如此——<strong>少数几件事决定了你大部分的人生质量</strong>。你应该把精力集中在最有价值的那一件事上，而不是分散在无数平庸的机会中。</p>
+                </div>
+                <div class="card accent-thiel">
+                    <h3>5. 秘密</h3>
+                    <p>世界仍然有很多未被发现的真理。蒂尔认为大多数人不相信还有秘密，这本身就是最大的机会。面试时他最爱问：<strong>"有什么重要事实是很少人同意你的？"</strong> 找到属于你的答案——那就是你的创业方向。</p>
+                </div>
+                <div class="card accent-thiel">
+                    <h3>6. 创始人悖论</h3>
+                    <p>最成功的创始人往往是<strong>极端矛盾的综合体</strong>——他们既是狂人又是天才，既极度自大又极度不安，既反社会又极具魅力。不要试图变得"正常"——你的独特特质可能是你最大的资产。</p>
+                </div>
+                <div class="card accent-thiel">
+                    <h3>7. 四种社会趋势（阻碍创新的力量）</h3>
+                    <ul>
+                        <li><strong>渐进主义</strong>：人们只敢微调现有事物。</li>
+                        <li><strong>风险规避</strong>：人们对失败的恐惧远超对成功的渴望。</li>
+                        <li><strong>自满</strong>：已经富有的人不愿冒险。</li>
+                        <li><strong>扁平化</strong>：人们错误地认为世界已被完全理解。</li>
+                    </ul>
+                </div>
+                <div class="card accent-thiel">
+                    <h3>8. 先占领小市场</h3>
+                    <p>每个垄断企业都从<strong>一个非常小的市场</strong>开始。Facebook从哈佛校园开始，亚马逊从卖书开始。在小市场中你可以占据主导地位，然后逐步扩展到相邻市场。不要一开始就瞄准巨大市场——竞争太激烈。</p>
+                </div>
+                <div class="card accent-thiel">
+                    <h3>9. 销售与分销同样重要</h3>
+                    <p>工程师常常低估销售的重要性。蒂尔说：<strong>最好的产品如果不被知道，就等于不存在。</strong>销售不一定是推销——病毒式增长、市场营销、渠道建设都是销售。找到适合你产品的分发方式。</p>
+                </div>
+                <div class="card accent-thiel">
+                    <h3>10. 七个关键问题</h3>
+                    <p>评估任何创业项目，蒂尔会问七个问题：工程问题（技术是否突破）、时机问题（是否是正确时间）、垄断问题（是否从小市场开始）、人员问题（团队是否合适）、销售问题（如何分发）、持久问题（10年后是否还在）、秘密问题（你是否看到了别人没看到的）。</p>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="border-left:4px solid var(--accent-thiel);">
+                <strong style="color:var(--accent-thiel);">🔑 蒂尔核心语录</strong>
+                <ul style="list-style:none; padding:0; margin-top:0.5rem;">
+                    <li style="margin-bottom:0.35rem;">▸ "竞争是为输家准备的。"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "有什么重要事实是很少人同意你的？"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "在从0到1的进步中，你创造的东西以前不存在。"</li>
+                    <li>▸ "最成功的人是那些在一件最重要的事情上找到真理的人。"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ ⑤ 思考，快与慢 ═══════════════════════════════════════ -->
+        <div class="book-section" id="kahneman">
+            <div class="book-header">
+                <span class="book-icon">⚡</span><h2>《思考，快与慢》</h2><span class="author">丹尼尔·卡尼曼 &nbsp;|&nbsp; Thinking, Fast and Slow</span>
+            </div>
+
+            <div class="insight-box" style="border-left:4px solid var(--accent-kahneman);">
+                <strong style="color:var(--accent-kahneman); font-size:1.05rem;">📌 全书定位</strong>
+                <p style="margin-top:0.4rem;">诺贝尔经济学奖得主丹尼尔·卡尼曼的毕生研究精华。揭示了人类大脑两套思考系统的运作机制，以及由此产生的<strong>系统性认知偏误</strong>。这本书从根本上改变了我们对"理性"的理解。</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card accent-kahneman">
+                    <h3>1. 系统1：快思考</h3>
+                    <p>自动、快速、不费力、无意识。负责日常的判断和直觉反应——识别面孔、察觉危险、理解简单句子、完成"2+2=?"。系统1让我们高效处理日常，但它<strong>依赖启发式和偏见</strong>，在复杂情况下容易出错。它无法被关闭。</p>
+                </div>
+                <div class="card accent-kahneman">
+                    <h3>2. 系统2：慢思考</h3>
+                    <p>理性、分析、需要刻意努力、消耗大量能量。负责复杂计算、逻辑推理、自我控制——解决"17×24=?"、比较两款手机的所有参数、在嘈杂环境中集中注意力。系统2<strong>天生懒惰</strong>，通常会默认接受系统1的快速判断而不加审查。</p>
+                </div>
+                <div class="card accent-kahneman">
+                    <h3>3. 认知偏误全景</h3>
+                    <p>卡尼曼揭示了数十种系统性认知偏误，核心包括：</p>
+                    <ul>
+                        <li><strong>锚定效应</strong>：第一个接触的数字会"锚定"后续判断。</li>
+                        <li><strong>可得性启发</strong>：更容易想起的事件被判断为更可能发生。</li>
+                        <li><strong>损失厌恶</strong>：同等损失带来的痛苦约为同等收益带来快乐的<strong>2倍</strong>。</li>
+                        <li><strong>过度自信</strong>：人们系统性地高估自己的判断准确性。</li>
+                        <li><strong>框架效应</strong>：同样的信息在不同表述下导致相反的选择。</li>
+                        <li><strong>确认偏误</strong>：倾向于寻找支持已有观点的证据。</li>
+                        <li><strong>光环效应</strong>：对某人的整体印象影响对其具体特征的判断。</li>
+                    </ul>
+                </div>
+                <div class="card accent-kahneman">
+                    <h3>4. 前景理论（Prospect Theory）</h3>
+                    <p>卡尼曼因此获得诺贝尔奖。核心发现：人在面对收益时是<strong>风险规避</strong>的（确定的100元优于50%概率的200元），但在面对损失时是<strong>风险偏好</strong>的（50%概率损失200元优于确定损失100元）。这解释了为什么人们会死守亏损股票却快速卖出盈利股票。</p>
+                </div>
+                <div class="card accent-kahneman">
+                    <h3>5. 两个自我：体验自我 vs 记忆自我</h3>
+                    <p><strong>体验自我</strong>活在当下，每秒都在感受。<strong>记忆自我</strong>负责记录和决策。问题在于，记忆自我不是录像机——它根据<strong>峰终定律</strong>（Peak-End Rule）来记录：只记住体验中最强烈时刻和结束时刻，忽略总时长。这导致我们做出不符合体验自我利益的选择。</p>
+                </div>
+                <div class="card accent-kahneman">
+                    <h3>6. 回归均值</h3>
+                    <p>极端表现之后，下一次表现通常会趋向平均水平。但人们倾向于为回归均值编造因果解释——"上次表现好后被教练骂了所以这次表现差"。实际上，这只是统计规律。理解回归均值能避免大量的错误归因。</p>
+                </div>
+                <div class="card accent-kahneman">
+                    <h3>7. 规划谬误</h3>
+                    <p>人们系统性地低估完成任务所需的时间和成本——这就是为什么装修总超预算、工程总延期。卡尼曼建议用<strong>"外部视角"</strong>：不看自己的计划，而是看类似项目实际花了多少时间和钱，以此作为参考基准。</p>
+                </div>
+                <div class="card accent-kahneman">
+                    <h3>8. 控制幻觉</h3>
+                    <p>人们倾向于高估自己对事件的控制能力。投资中尤其明显——频繁交易的投资者以为自己能预测市场，但数据证明他们大多数跑不赢指数。承认世界充满<strong>随机性和不确定性</strong>，是理性决策的第一步。</p>
+                </div>
+                <div class="card accent-kahneman">
+                    <h3>9. 启动效应</h3>
+                    <p>接触某个刺激（如看到与"老年"相关的词）会在无意识中影响后续行为和判断。环境中的细微线索可以在我们完全没意识到的情况下改变我们的想法和行动。</p>
+                </div>
+                <div class="card accent-kahneman">
+                    <h3>10. 如何更理性？</h3>
+                    <blockquote>重大决策，一定要放下直觉，启用理性慢思考。</blockquote>
+                    <p>卡尼曼的建议：承认自己的认知局限，在重要决策时<strong>主动唤醒系统2</strong>。使用检查清单、寻求外部视角、延迟判断、考虑反面证据。但即使是他自己，也说经过一生研究后，识别自己偏误的能力并没有显著提高——<strong>能识别偏误和能避免偏误是两回事</strong>。</p>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="border-left:4px solid var(--accent-kahneman);">
+                <strong style="color:var(--accent-kahneman);">🔑 卡尼曼核心语录</strong>
+                <ul style="list-style:none; padding:0; margin-top:0.5rem;">
+                    <li style="margin-bottom:0.35rem;">▸ "大脑有两套思考系统。系统1快速但容易出错，系统2理性但懒惰。"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "我们对自己的无知是无知的。"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "人们对损失的感受强度大约是收益的两倍。"</li>
+                    <li>▸ "相信自己的直觉没有问题——前提是你在一个规律可预测的领域中有大量反馈经验。"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ ⑥ 掌控习惯 ═══════════════════════════════════════ -->
+        <div class="book-section" id="clear">
+            <div class="book-header">
+                <span class="book-icon">🔄</span><h2>《掌控习惯》</h2><span class="author">詹姆斯·克利尔 &nbsp;|&nbsp; Atomic Habits</span>
+            </div>
+
+            <div class="insight-box" style="border-left:4px solid var(--accent-clear);">
+                <strong style="color:var(--accent-clear); font-size:1.05rem;">📌 全书定位</strong>
+                <p style="margin-top:0.4rem;">习惯养成领域的集大成之作。詹姆斯·克利尔提出了一套完整的行为科学框架，告诉你如何用<strong>微小到不可能失败的改变</strong>，在长期中实现惊人的转变。核心理念：你不应该追求目标，你应该设计系统。</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card accent-clear">
+                    <h3>1. 习惯的复利效应</h3>
+                    <p><strong>每天进步1%，一年后你会进步37倍。</strong>（1.01³⁶⁵ ≈ 37.78）反过来，每天退步1%，一年后你会退化到几乎为零。（0.99³⁶⁵ ≈ 0.03）习惯是自我提升的复利——微小的改变在当下看起来不起眼，但在长期中会产生惊人的结果。</p>
+                </div>
+                <div class="card accent-clear">
+                    <h3>2. 习惯的四步模型</h3>
+                    <p>每个习惯都遵循一个<strong>神经反馈循环</strong>：</p>
+                    <p style="text-align:center; font-weight:700; color:var(--accent-clear); margin:0.5rem 0;">
+                        提示 → 渴求 → 回应 → 奖励
+                    </p>
+                    <p><strong>提示</strong>触发大脑注意到奖励的存在，<strong>渴求</strong>是改变状态的欲望，<strong>回应</strong>是你执行的习惯行动，<strong>奖励</strong>是行动带来的满足感。理解这个循环，就能设计任何习惯。</p>
+                </div>
+                <div class="card accent-clear">
+                    <h3>3. 四大行为转变法则</h3>
+                    <p>对应四步模型，克利尔提出四大法则来建立好习惯（以及反转法则来戒除坏习惯）：</p>
+                    <ul>
+                        <li><strong>第一定律：让它显而易见</strong>（好习惯：增加线索；坏习惯：减少暴露）</li>
+                        <li><strong>第二定律：让它有吸引力</strong>（好习惯：绑定喜好；坏习惯：强调坏处）</li>
+                        <li><strong>第三定律：让它简单易行</strong>（好习惯：减少阻力；坏习惯：增加阻力）</li>
+                        <li><strong>第四定律：让它令人满足</strong>（好习惯：即时奖励；坏习惯：即时惩罚）</li>
+                    </ul>
+                </div>
+                <div class="card accent-clear">
+                    <h3>4. 身份认同——最深层的改变</h3>
+                    <p>改变有三个层次：<strong>结果</strong>（你得到了什么）→ <strong>过程</strong>（你做了什么）→ <strong>身份</strong>（你相信什么）。大多数人从结果入手，但真正的、持久的改变来自<strong>身份认同的转变</strong>。不要说"我在戒烟"，而说"我不抽烟"。不要说"我想减肥"，而说"我是一个注重健康的人"。每一个行动都是你对自己身份的一次投票。</p>
+                </div>
+                <div class="card accent-clear">
+                    <h3>5. 环境设计 > 意志力</h3>
+                    <p>人们总以为改变靠意志力，但克利尔认为<strong>环境是塑造行为的隐形之手</strong>。想要养成好习惯？把它放在最显眼的地方。想要戒掉坏习惯？让它从你的环境中消失。重新设计你的环境比依靠自制力有效得多。</p>
+                </div>
+                <div class="card accent-clear">
+                    <h3>6. 两分钟规则</h3>
+                    <p>任何新习惯都应该在<strong>两分钟内完成</strong>。想养成阅读习惯？从每天读一页开始。想健身？从穿上运动服开始。关键不是一开始就做到完美，而是先建立"出场"的习惯——<strong>先标准化，再优化</strong>。一旦行动的门槛被降低到极致，启动就不再需要意志力。</p>
+                </div>
+                <div class="card accent-clear">
+                    <h3>7. 习惯叠加</h3>
+                    <p>将新习惯绑定到已有的习惯上，利用大脑已有的突触连接。公式：<strong>"在[现有习惯]之后，我将[新习惯]。"</strong>例如："在我每天早晨倒好咖啡之后，我将冥想一分钟。" "在我脱下工作鞋之后，我将立即换上运动服。"</p>
+                </div>
+                <div class="card accent-clear">
+                    <h3>8. 喜好绑定（Temptation Bundling）</h3>
+                    <p>将你想做的事（奖励）与你需要做的事（习惯）绑定。比如：只有在跑步机上时才能看你最喜欢的Netflix剧集。把"需要做"和"想要做"配对，让习惯变得有吸引力。</p>
+                </div>
+                <div class="card accent-clear">
+                    <h3>9. 习惯追踪与即时满足</h3>
+                    <p>人类大脑偏好即时奖励。好习惯的问题在于它的回报是延迟的——今天锻炼，几个月后才看到效果。解决方案是<strong>制造即时满足感</strong>：用日历追踪每天的习惯完成情况，每次打勾都产生微小的成就感。习惯追踪本身就是一种奖励。</p>
+                </div>
+                <div class="card accent-clear">
+                    <h3>10. 永不缺席两次</h3>
+                    <p>完美主义是习惯的头号杀手。错过一天不是问题——<strong>连续错过两天才是滑坡的开始</strong>。克利尔的规则：可以偶尔中断，但绝不允许自己连续中断两次。坏习惯的回归往往从"就这一次"开始。</p>
+                </div>
+                <div class="card accent-clear">
+                    <h3>11. 金发女孩法则</h3>
+                    <p>人们在难度<strong>恰到好处</strong>的任务中体验最强的动力——既不太难让人焦虑，也不太简单让人无聊。保持习惯的关键是维持这种"刚刚好的挑战"。当习惯变得太容易时，增加一点难度；当它变得太难时，降低一点要求。</p>
+                </div>
+                <div class="card accent-clear">
+                    <h3>12. 目标是关于结果的，系统是关于过程的</h3>
+                    <p>赢家和输家有相同的目标——每个奥运选手都想拿金牌。区别在于<strong>系统</strong>。目标设定是好的，但如果你只关注目标而不改善系统，目标实现后你会回到原点。专注于设计一个能持续产生好结果的系统，而不是执着于单个目标。</p>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="border-left:4px solid var(--accent-clear);">
+                <strong style="color:var(--accent-clear);">🔑 克利尔核心语录</strong>
+                <ul style="list-style:none; padding:0; margin-top:0.5rem;">
+                    <li style="margin-bottom:0.35rem;">▸ "每天进步1%，一年后你会进步37倍。"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "你不应该追求目标，你应该设计系统。"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "每一个行动都是你对自己身份的一次投票。"</li>
+                    <li style="margin-bottom:0.35rem;">▸ "环境是塑造行为的隐形之手。重新设计环境，而非依赖意志力。"</li>
+                    <li>▸ "先标准化，再优化。从两分钟开始。"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 🔍 六书终极对比 ═══════════════════════════════════════ -->
+        <div class="book-section" id="compare" style="margin-top:2rem;">
+            <div class="book-header">
+                <span class="book-icon">🔍</span><h2>六书终极对比</h2><span class="author">一张表看懂六位思想大师</span>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>书籍</th><th>作者</th><th>核心领域</th><th>最核心洞见</th><th>关键行动</th><th>一句话概括</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>纳瓦尔宝典</strong></td><td>纳瓦尔·拉维坎特</td><td>财富 + 幸福</td>
+                            <td>专长 × 杠杆 × 判断力 = 财富；幸福 = 减少欲望</td>
+                            <td>叠加代码/媒体杠杆，拥有股权</td>
+                            <td>把自己当作产品，用杠杆放大价值</td>
+                        </tr>
+                        <tr>
+                            <td><strong>原则</strong></td><td>雷·达里奥</td><td>决策系统</td>
+                            <td>痛苦 + 反思 = 进步；极度透明 + 可信度加权</td>
+                            <td>建立原则清单，机器化执行</td>
+                            <td>把人生当作机器来优化</td>
+                        </tr>
+                        <tr>
+                            <td><strong>穷查理宝典</strong></td><td>查理·芒格</td><td>思维模型</td>
+                            <td>多元思维模型；逆向思维；25种误判心理</td>
+                            <td>跨学科阅读，用检查清单决策</td>
+                            <td>用100个模型理解世界，避免愚蠢</td>
+                        </tr>
+                        <tr>
+                            <td><strong>从0到1</strong></td><td>彼得·蒂尔</td><td>创新与创业</td>
+                            <td>垄断优于竞争；幂次法则；找到秘密</td>
+                            <td>追求垂直进步，从小市场开始</td>
+                            <td>做唯一的事，而非更好的事</td>
+                        </tr>
+                        <tr>
+                            <td><strong>思考快与慢</strong></td><td>丹尼尔·卡尼曼</td><td>认知心理学</td>
+                            <td>系统1（直觉）vs 系统2（理性）；前景理论</td>
+                            <td>重大决策启用慢思考，用外部视角</td>
+                            <td>认识到自己有多不理性，是理性的开始</td>
+                        </tr>
+                        <tr>
+                            <td><strong>掌控习惯</strong></td><td>詹姆斯·克利尔</td><td>行为改变</td>
+                            <td>四步模型；身份认同；1%每日进步</td>
+                            <td>设计环境，从两分钟开始，永不缺席两次</td>
+                            <td>微小的改变，巨大的复利</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 互相呼应总结 -->
+            <h3 style="color:var(--gold-light); margin:2rem 0 1rem; font-size:1.15rem;">🧬 六书之间的深层呼应</h3>
+            <div class="compare-grid">
+                <div class="compare-card" style="border-left:4px solid var(--accent-naval);">
+                    <h4 style="color:var(--accent-naval);">纳瓦尔 × 芒格：复利与长期主义</h4>
+                    <p>两人都强调<strong>复利是宇宙中最强大的力量</strong>。纳瓦尔讲财富复利——拥有资产让它增长。芒格讲知识复利——每天阅读让智慧叠加。共同点：做你愿意做一辈子的事，让时间成为盟友。</p>
+                </div>
+                <div class="compare-card" style="border-left:4px solid var(--accent-dalio);">
+                    <h4 style="color:var(--accent-dalio);">达里奥 × 克利尔：系统战胜意志</h4>
+                    <p>两人都相信<strong>系统比人的意志力更可靠</strong>。达里奥设计公司系统（原则+流程），克利尔设计个人系统（环境+习惯）。共同点：不要依赖每次决策时的自制力——设计一个让正确行为自动发生的系统。</p>
+                </div>
+                <div class="compare-card" style="border-left:4px solid var(--accent-kahneman);">
+                    <h4 style="color:var(--accent-kahneman);">卡尼曼 × 芒格：认知偏误双视角</h4>
+                    <p>卡尼曼从<strong>学术实验</strong>揭示了系统1的陷阱和数十种认知偏误。芒格从<strong>实践经验</strong>整理了25种误判心理倾向。两人殊途同归：人类的直觉在复杂决策中不可靠，需要刻意纠偏。</p>
+                </div>
+                <div class="compare-card" style="border-left:4px solid var(--accent-thiel);">
+                    <h4 style="color:var(--accent-thiel);">蒂尔 × 纳瓦尔：非对称回报</h4>
+                    <p>蒂尔讲<strong>幂次法则</strong>——少数投资带来大部分回报，所以要把筹码押在最好的机会上。纳瓦尔讲<strong>杠杆效应</strong>——用小投入撬动大回报。共同点：不要在平庸事物上浪费精力，找到那个能改变一切的关键变量。</p>
+                </div>
+                <div class="compare-card" style="border-left:4px solid var(--accent-clear);">
+                    <h4 style="color:var(--accent-clear);">克利尔 × 卡尼曼：环境的力量</h4>
+                    <p>克利尔说<strong>环境是行为的隐形之手</strong>，设计环境比依赖意志力有效。卡尼曼揭示了<strong>启动效应</strong>——环境中的细微线索在无意识中影响我们的判断。共同点：你以为是自己在做决定，其实环境在很大程度上替你做了决定。</p>
+                </div>
+                <div class="compare-card" style="border-left:4px solid var(--accent-munger);">
+                    <h4 style="color:var(--accent-munger);">芒格 × 达里奥：错误的价值</h4>
+                    <p>芒格说<strong>避免愚蠢比追求聪明更重要</strong>，从别人的错误中学习。达里奥说<strong>痛苦+反思=进步</strong>，错误是最好的学习材料。共同点：错误不可怕，浪费错误才可怕。一个错误没有学到教训，才是真正的损失。</p>
+                </div>
+            </div>
+
+            <!-- 终极总结 -->
+            <div class="insight-box" style="margin-top:2rem; border:1px solid rgba(212,168,83,0.25); background:rgba(212,168,83,0.04);">
+                <strong style="color:var(--gold-light); font-size:1.1rem;">🏆 六本书的终极共同指向</strong>
+                <p style="margin-top:0.6rem; line-height:1.9;">
+                    真正的智慧不在于知道多少，而在于——<br>
+                    ① 建立<strong style="color:var(--accent-munger);">多元思维模型</strong>（芒格），用跨学科网格理解世界；<br>
+                    ② 在重大决策时用<strong style="color:var(--accent-kahneman);">理性慢思考</strong>（卡尼曼），放下直觉，警惕偏误；<br>
+                    ③ 将思考固化为可复用的<strong style="color:var(--accent-dalio);">原则</strong>（达里奥），像机器一样迭代优化；<br>
+                    ④ 将原则落地为每日的<strong style="color:var(--accent-clear);">微小习惯</strong>（克利尔），让正确行为自动化；<br>
+                    ⑤ 用独特的洞察去创造<strong style="color:var(--accent-thiel);">从0到1的垄断价值</strong>（蒂尔），远离平庸竞争；<br>
+                    ⑥ 最终实现<strong style="color:var(--accent-naval);">财富自由与内心幸福</strong>（纳瓦尔）的双重复利——拥有股权、减少欲望、活在当下。
+                </p>
+            </div>
+
+            <blockquote style="font-size:1.05rem; margin-top:1.8rem; border-left-color:var(--gold);">
+                <strong>阅读建议：</strong>这六本书构成了从"思维模型 → 认知纠偏 → 决策原则 → 习惯系统 → 创新行动 → 财富幸福"的完整闭环。建议优先精读《纳瓦尔宝典》获得整体框架，再以《穷查理宝典》建立思维格栅，用《思考快与慢》校准认知，用《原则》系统化决策，用《掌控习惯》落地执行，最后以《从0到1》的视角寻找你独特的创新机会。
+            </blockquote>
+        </div>
+
+    </div>
+
+    <!-- Back to top -->
+    <a href="#top" class="back-top" title="回到顶部">↑</a>
+
+    <footer class="footer">
+        <p>📚 <strong>智慧书架</strong> · 六本改变命运的经典 · 深度全解</p>
+        <p style="margin-top:0.3rem;">纳瓦尔·拉维坎特 &nbsp;|&nbsp; 雷·达里奥 &nbsp;|&nbsp; 查理·芒格 &nbsp;|&nbsp; 彼得·蒂尔 &nbsp;|&nbsp; 丹尼尔·卡尼曼 &nbsp;|&nbsp; 詹姆斯·克利尔</p>
+        <p style="margin-top:0.2rem;">发布于 2026 年 9 月 22 日</p>
+    </footer>
+
+</body>
+</html>
